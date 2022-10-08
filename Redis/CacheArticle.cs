@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using Redis.Models;
 using Redis.Services.Repository.Impelement;
@@ -10,11 +11,13 @@ namespace Redis.Redis
     {
         private readonly IDistributedCache _distributedCache;
         private readonly IArticleRepository _articleRepository;
+        private readonly Context _context;
 
-        public CacheArticle(IDistributedCache distributedCache,  IArticleRepository articleRepository)
+        public CacheArticle(IDistributedCache distributedCache,  IArticleRepository articleRepository, Context context)
         {
             _distributedCache = distributedCache;
             _articleRepository = articleRepository;
+            _context = context;
         }
 
         private List<T> deserializeObject<T>(byte[] redisList)
@@ -52,6 +55,8 @@ namespace Redis.Redis
             }
             return articles;
         }
+
+      
         public async Task<List<Article>> cacheAdd(string cacheKey, Article article, DateTime expire)
         {
             var redisList = await _distributedCache.GetAsync(cacheKey);

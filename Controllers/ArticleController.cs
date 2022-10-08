@@ -13,7 +13,7 @@ namespace Redis.Controllers
 
         private readonly CacheArticle _cacheArticle;
         private readonly IArticleRepository _articleRepository;
-        const string cacheKeyArticle = "ArticleList";
+        const string cacheKeyArticle = "articleKey";
         DateTime expire = DateTime.Now.AddSeconds(30);
 
         public WeatherForecastController(CacheArticle cacheArticle, IArticleRepository articleRepository)
